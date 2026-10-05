@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { CategoriasService } from './categorias.service.js';
 import { CreateCategoriaDto } from './dto/create-categoria.dto.js';
 import { UpdateCategoriaDto } from './dto/update-categoria.dto.js';
@@ -8,8 +8,8 @@ export class CategoriasController {
   constructor(private readonly categoriasService: CategoriasService) {}
 
   @Post()
-  create(@Body() createCategoriaDto: CreateCategoriaDto) {
-    return this.categoriasService.create(createCategoriaDto);
+  create(@Body() dto: CreateCategoriaDto) {
+    return this.categoriasService.create(dto);
   }
 
   @Get()
@@ -18,17 +18,17 @@ export class CategoriasController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoriasService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.categoriasService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoriaDto: UpdateCategoriaDto) {
-    return this.categoriasService.update(+id, updateCategoriaDto);
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCategoriaDto) {
+    return this.categoriasService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoriasService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.categoriasService.remove(id);
   }
 }
